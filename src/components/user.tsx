@@ -19,10 +19,11 @@ export  function User() {
 //   let user = session?.user;
 const { data: user } = useSession();
 
-const handleLogout = () => {
+const handleLogout = async () => {
+
   // Call signOut to log out the user and redirect them to the sign-in page
-  signOut({
-    callbackUrl: "https://new-admin-pannel-rho.vercel.app/auth/signin", // Redirect to sign-in page after logout
+ await signOut({
+    callbackUrl: "/auth/signin", // Redirect to sign-in page after logout
   });
 };
 
