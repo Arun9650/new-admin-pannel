@@ -7,10 +7,11 @@ const secret = process.env.NEXTAUTH_SECRET;
 
 export async function middleware(req: NextRequest) {
   const token = await getToken({ req, secret });
+  console.log("🚀 ~ middleware ~ token:", token)
 
   // If no token, redirect to sign-in
   if (!token) {
-    return NextResponse.redirect(new URL("/auth/signin", req.url));
+    return NextResponse.redirect(new URL("https://new-admin-pannel-rho.vercel.app/auth/signin", req.url));
   }
 
   // Allow request to continue if authenticated

@@ -22,7 +22,7 @@ const { data: user } = useSession();
 const handleLogout = () => {
   // Call signOut to log out the user and redirect them to the sign-in page
   signOut({
-    callbackUrl: "/auth/signin", // Redirect to sign-in page after logout
+    callbackUrl: "https://new-admin-pannel-rho.vercel.app/auth/signin", // Redirect to sign-in page after logout
   });
 };
 
