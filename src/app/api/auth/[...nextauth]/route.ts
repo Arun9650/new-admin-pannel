@@ -1,10 +1,16 @@
-import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { prisma1 } from "@/../lib/prisma";
-import bcrypt from "bcryptjs";
+// /app/api/auth/[...nextauth]/route.ts
+import NextAuth, { Session, User } from "next-auth";
 
-// Define the NextAuth configuration options
-export const authOptions = {
+declare module "next-auth" {
+  interface Session {
+    user: User & { id: string };
+  }
+}
+import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
+import { authPrisma } from "@/../lib/prisma"; // Use the prisma client for auth
+
+const handler = NextAuth({
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -13,28 +19,30 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+        // Check if the email and password are provided
         if (!credentials?.email || !credentials?.password) {
-          return null; // Return null if credentials are missing
+          return null;
         }
 
-        // Fetch the user by email
-        const user = await prisma1.user.findUnique({
+        // Fetch user by email using the prisma1 client
+        const user = await authPrisma.user.findUnique({
           where: { email: credentials.email },
-        });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        }) as any ;
 
         // If no user or password is found, return null
         if (!user || !user.password) {
           return null;
         }
 
-        // Compare passwords
+        // Compare the hashed password using bcrypt
         const isValidPassword = await bcrypt.compare(credentials.password, user.password);
 
-        // If the password is valid, return the user object
+        // If valid, return the user object (without password)
         if (isValidPassword) {
           return {
             id: user.id,
-            name: user.username,
+            name: user.username, // Assuming user has a "name" field
             email: user.email,
           };
         }
@@ -45,15 +53,20 @@ export const authOptions = {
     }),
   ],
   callbacks: {
+    // Add user ID to the JWT token
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id; // Add user ID to the token
+        token.id = user.id;
       }
       return token;
     },
-    async session({ session, token }) {
+    // Add user ID to the session
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async session({ session, token } : { session: Session; token: any } ) {
       if (token?.id) {
-        session.user.id = token.id; // Add user ID to the session
+        if (session.user) {
+          session.user.id = token.id;
+        }
       }
       return session;
     },
@@ -62,13 +75,10 @@ export const authOptions = {
     signIn: "/auth/signin", // Custom sign-in page
   },
   session: {
-    strategy: "jwt", // Use JWT for session strategy
+    strategy: "jwt", // Using JWT for session handling
   },
-  secret: process.env.NEXTAUTH_SECRET, // Ensure NEXTAUTH_SECRET is set in your .env file
-};
+  secret: process.env.NEXTAUTH_SECRET, // Ensure this is set in your .env file
+});
 
-// Define the handler using NextAuth and export for GET and POST
-const handler = NextAuth(authOptions);
-
-// Export both GET and POST for NextAuth
+// Export both GET and POST handlers for NextAuth
 export { handler as GET, handler as POST };
