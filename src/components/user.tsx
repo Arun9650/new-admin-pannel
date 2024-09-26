@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 import { signOut } from "next-auth/react";
 export  function User() {
@@ -19,12 +19,12 @@ export  function User() {
 //   let user = session?.user;
 const { data: user } = useSession();
 
-const handleLogout = async () => {
+
+const handleLogout =  () => {
 
   // Call signOut to log out the user and redirect them to the sign-in page
- await signOut({
-    callbackUrl: "/auth/signin", // Redirect to sign-in page after logout
-  });
+  signOut();
+  signIn();
 };
 
   return (
@@ -56,7 +56,7 @@ const handleLogout = async () => {
             //     await signOut();
             //   }}
             >
-              <button type="submit" onClick={() => handleLogout()}>Sign Out</button>
+              <button type="submit" onClick={handleLogout}>Sign Out</button>
             </form>
           </DropdownMenuItem>
         ) : (
