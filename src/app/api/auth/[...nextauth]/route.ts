@@ -1,11 +1,9 @@
-// /app/api/auth/[...nextauth]/route.ts
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { prisma1} from "@/../lib/prisma";
+import { prisma1 } from "@/../lib/prisma";
 import bcrypt from "bcryptjs";
 
-
-
+// Define the NextAuth configuration options
 export const authOptions = {
   providers: [
     CredentialsProvider({
@@ -19,20 +17,20 @@ export const authOptions = {
           return null; // Return null if credentials are missing
         }
 
-        // Fetch user by email
+        // Fetch the user by email
         const user = await prisma1.user.findUnique({
           where: { email: credentials.email },
         });
 
-        // If no user is found or the password is undefined, return null
+        // If no user or password is found, return null
         if (!user || !user.password) {
           return null;
         }
 
-        // Compare passwords and ensure both are strings
+        // Compare passwords
         const isValidPassword = await bcrypt.compare(credentials.password, user.password);
 
-        // If the password is valid, return the user object without the password
+        // If the password is valid, return the user object
         if (isValidPassword) {
           return {
             id: user.id,
@@ -41,23 +39,18 @@ export const authOptions = {
           };
         }
 
-        // If password comparison fails, return null
+        // If the password is incorrect, return null
         return null;
       },
     }),
   ],
   callbacks: {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id; // Add user ID to the token
       }
       return token;
     },
- // eslint-disable-next-line @typescript-eslint/ban-ts-comment
- // @ts-expect-error
-
     async session({ session, token }) {
       if (token?.id) {
         session.user.id = token.id; // Add user ID to the session
@@ -69,9 +62,13 @@ export const authOptions = {
     signIn: "/auth/signin", // Custom sign-in page
   },
   session: {
-    strategy: "jwt" as const, // Explicitly type session strategy as 'jwt'
+    strategy: "jwt", // Use JWT for session strategy
   },
-  secret: process.env.NEXTAUTH_SECRET, // Ensure this is correctly set in your .env file
+  secret: process.env.NEXTAUTH_SECRET, // Ensure NEXTAUTH_SECRET is set in your .env file
 };
 
-export default  NextAuth(authOptions);
+// Define the handler using NextAuth and export for GET and POST
+const handler = NextAuth(authOptions);
+
+// Export both GET and POST for NextAuth
+export { handler as GET, handler as POST };
