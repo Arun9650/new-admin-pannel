@@ -147,6 +147,14 @@ const config = {
         "fromEnvVar": null,
         "value": "windows",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "windows"
+      },
+      {
+        "fromEnvVar": null,
+        "value": "rhel-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
@@ -173,8 +181,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./generated/client1\"\n}\n\ndatasource db {\n  provider = \"mongodb\"\n  url      = env(\"DATABASE_URL_1\")\n}\n\nmodel User {\n  id       String    @id @default(auto()) @map(\"_id\") @db.ObjectId\n  username String\n  email    String    @unique\n  password String\n  image    String?\n  accounts Account[]\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Account {\n  id                String  @id @default(auto()) @map(\"_id\") @db.ObjectId\n  userId            String  @db.ObjectId\n  type              String\n  provider          String\n  providerAccountId String\n  refresh_token     String? @db.String\n  access_token      String? @db.String\n  expires_at        Int?\n  token_type        String?\n  scope             String?\n  id_token          String? @db.String\n  session_state     String?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  user User @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@unique([provider, providerAccountId])\n}\n",
-  "inlineSchemaHash": "4a50a0df2db63407e29f45b9469cb7ff27b31a3d4aa0aa45004a366293245abb",
+  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"./generated/client1\"\n  binaryTargets = [\"native\", \"windows\", \"rhel-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"mongodb\"\n  url      = env(\"DATABASE_URL_1\")\n}\n\nmodel User {\n  id       String    @id @default(auto()) @map(\"_id\") @db.ObjectId\n  username String\n  email    String    @unique\n  password String\n  image    String?\n  accounts Account[]\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Account {\n  id                String  @id @default(auto()) @map(\"_id\") @db.ObjectId\n  userId            String  @db.ObjectId\n  type              String\n  provider          String\n  providerAccountId String\n  refresh_token     String? @db.String\n  access_token      String? @db.String\n  expires_at        Int?\n  token_type        String?\n  scope             String?\n  id_token          String? @db.String\n  session_state     String?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  user User @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@unique([provider, providerAccountId])\n}\n",
+  "inlineSchemaHash": "6ecffd7cd29fd88406742c427df81e732fcbf8ebd3ad5475a62e1c14b025599a",
   "copyEngine": true
 }
 config.dirname = '/'

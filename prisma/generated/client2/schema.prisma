@@ -1,7 +1,8 @@
 // This is your Prisma schema file for MongoDB
 generator client {
-  provider = "prisma-client-js"
-  output   = "./generated/client2"
+  provider      = "prisma-client-js"
+  output        = "./generated/client2"
+  binaryTargets = ["native", "windows", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
