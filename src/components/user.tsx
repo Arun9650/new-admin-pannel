@@ -11,13 +11,13 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
-import { useSession, signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 import { signOut } from "next-auth/react";
 export  function User() {
 //   let session = await auth();
 //   let user = session?.user;
-const { data: user, status } = useSession();
+const { data: user } = useSession();
 
 const handleLogout = () => {
   // Call signOut to log out the user and redirect them to the sign-in page

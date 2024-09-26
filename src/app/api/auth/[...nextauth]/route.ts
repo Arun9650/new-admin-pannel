@@ -47,14 +47,17 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    //@ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id; // Add user ID to the token
       }
       return token;
     },
-     //@ts-ignore
+ // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+ // @ts-expect-error
+
     async session({ session, token }) {
       if (token?.id) {
         session.user.id = token.id; // Add user ID to the session

@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { NavItem } from "../nav-item";
-import { BookCheck, Home, LineChart, PanelLeft, Settings, ShoppingCart, Users2 } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { BookCheck, Home, LineChart, PanelLeft,  ShoppingCart, Users2 } from "lucide-react";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 
 const DesktopNav = () => {
