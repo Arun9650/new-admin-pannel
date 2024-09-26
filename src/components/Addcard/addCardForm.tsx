@@ -121,7 +121,7 @@ export default function AddCardForm() {
 			alert('Image is required.');
 			return;
 		}
-		const apiEndpoint = 'http://localhost:3000/api/add-card';
+		const apiEndpoint = 'https://new-admin-pannel-rho.vercel.app/api/add-card';
 
 		await axios
 			.post(apiEndpoint, formData, {
