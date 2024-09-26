@@ -10,10 +10,10 @@ export default function SignInPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-
+  const [loading, setLoading] = useState(false);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    setLoading(true);
     // Use signIn from NextAuth to handle the credential-based login
     const result = await signIn("credentials", {
       redirect: false,
@@ -24,6 +24,8 @@ export default function SignInPage() {
     if (result?.error) {
       // Show error if login fails
       setError("Invalid email or password");
+      // Reset loading state after submission
+    setLoading(false);
     } else {
       // Redirect to the / or another page upon successful login
       router.push("/");
@@ -70,7 +72,7 @@ export default function SignInPage() {
             type="submit"
             className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none"
           >
-            Sign In
+           {loading ? 'Loading...' : 'Sign In'}
           </button>
         </form>
       </div>
