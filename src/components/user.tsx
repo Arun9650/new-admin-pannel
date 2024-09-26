@@ -56,7 +56,7 @@ const handleLogout = async () => {
             //     await signOut();
             //   }}
             >
-              <button type="submit" onClick={handleLogout}>Sign Out</button>
+              <button type="submit" onClick={() => handleLogout()}>Sign Out</button>
             </form>
           </DropdownMenuItem>
         ) : (
