@@ -1,11 +1,6 @@
 // /app/api/auth/[...nextauth]/route.ts
-import NextAuth, { Session, User } from "next-auth";
+import NextAuth from "next-auth";
 
-declare module "next-auth" {
-  interface Session {
-    user: User & { id: string };
-  }
-}
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { authPrisma } from "@/../lib/prisma"; // Use the prisma client for auth
@@ -52,25 +47,6 @@ const handler = NextAuth({
       },
     }),
   ],
-  callbacks: {
-    // Add user ID to the JWT token
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-      }
-      return token;
-    },
-    // Add user ID to the session
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async session({ session, token } : { session: Session; token: any } ) {
-      if (token?.id) {
-        if (session.user) {
-          session.user.id = token.id;
-        }
-      }
-      return session;
-    },
-  },
   pages: {
     signIn: "/auth/signin", // Custom sign-in page
   },
