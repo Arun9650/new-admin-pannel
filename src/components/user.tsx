@@ -14,6 +14,7 @@ import Link from 'next/link';
 import { signIn, useSession } from "next-auth/react";
 
 import { signOut } from "next-auth/react";
+import { destroyCookie } from "nookies";
 export  function User() {
 //   let session = await auth();
 //   let user = session?.user;
@@ -21,7 +22,7 @@ const { data: user } = useSession();
 
 
 const handleLogout =  () => {
-
+  destroyCookie(null, "__Secure-next-auth.session-token");
   // Call signOut to log out the user and redirect them to the sign-in page
   signOut();
   signIn();
