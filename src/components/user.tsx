@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
-import { signIn, useSession } from "next-auth/react";
+import {  useSession } from "next-auth/react";
 
 import { signOut } from "next-auth/react";
 import { destroyCookie } from "nookies";
