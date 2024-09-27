@@ -23,9 +23,16 @@ const { data: user } = useSession();
 
 const handleLogout =  () => {
   destroyCookie(null, "__Secure-next-auth.session-token");
-  // Call signOut to log out the user and redirect them to the sign-in page
-  signOut();
-  signIn();
+  destroyCookie(null, 'next-auth.session-token'); 
+  destroyCookie(null, 'next-auth.csrf-token');
+  // Sign out and redirect to the sign-in page
+  signOut({
+    callbackUrl: '/auth/signin',
+  }).then(() => {
+    // Clear localStorage/sessionStorage if needed
+    window.localStorage.clear();
+    window.sessionStorage.clear();
+  });
 };
 
   return (
