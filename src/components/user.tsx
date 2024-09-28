@@ -14,6 +14,7 @@ import Link from 'next/link';
 import {  useSession } from "next-auth/react";
 
 import { signOut } from "next-auth/react";
+import LogOutButton from './LogOutButton';
 
 export  function User() {
 //   let session = await auth();
@@ -21,21 +22,7 @@ export  function User() {
 const { data: user } = useSession();
 
 
-const handleLogout =  () => {
- 
-  // Sign out and redirect to the sign-in page
-  signOut({
-    callbackUrl: '/auth/signin',
-  });
-    // Manually clear session-related cookies if necessary
-    document.cookie = '__Secure-next-auth.session-token=; Max-Age=0; path=/; secure;';
-    document.cookie = 'next-auth.session-token=; Max-Age=0; path=/;';
-    document.cookie = 'next-auth.csrf-token=; Max-Age=0; path=/;';
-  
-    
-  window.localStorage.clear();
-  window.sessionStorage.clear();
-};
+
 
   return (
     <DropdownMenu>
@@ -66,7 +53,8 @@ const handleLogout =  () => {
             //     await signOut();
             //   }}
             >
-              <button type="submit" onClick={handleLogout}>Sign Out</button>
+              {/* <button type="submit" onClick={handleLogout}>Sign Out</button> */}
+              <LogOutButton/>
             </form>
           </DropdownMenuItem>
         ) : (
