@@ -4,7 +4,7 @@ import React from 'react'
 
 
 const LogOutButton = () => {
-    const handleLogout =  () => {
+    const handleLogout = async () => {
         'use server'
         const { cookies } = await import('header'); // Dynamically import cookies from header
         const cookieStore = cookies()
