@@ -14,7 +14,7 @@ import Link from 'next/link';
 import {  useSession } from "next-auth/react";
 
 import { signOut } from "next-auth/react";
-import { destroyCookie } from "nookies";
+
 export  function User() {
 //   let session = await auth();
 //   let user = session?.user;
